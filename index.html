@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Green vs Red — Absürt Seçim</title>
+  <title>Renk Seçimi</title>
   <style>
     * {
       box-sizing: border-box;
@@ -25,7 +25,7 @@
 
     .card {
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       background: #13131c;
       border: 1px solid #262638;
       border-radius: 20px;
@@ -46,15 +46,16 @@
 
     .buttons {
       display: flex;
+      flex-direction: column;
       gap: 14px;
-      justify-content: center;
     }
 
     button.choice {
-      flex: 1;
-      padding: 16px 12px;
-      font-size: 18px;
+      width: 100%;
+      padding: 16px 14px;
+      font-size: 17px;
       font-weight: 700;
+      line-height: 1.4;
       border: none;
       border-radius: 14px;
       cursor: pointer;
@@ -63,7 +64,7 @@
     }
 
     button.choice:active {
-      transform: scale(0.96);
+      transform: scale(0.97);
     }
 
     .btn-green {
@@ -111,11 +112,17 @@
 <body>
   <div class="card">
     <div id="menu">
-      <h1>Birini Seç Bakalım</h1>
-      <p class="sub">Kader butonu hangisine basacağını bekliyor...</p>
+      <!-- EN ÜSTTEKİ BAŞLIK YAZISI: -->
+      <h1> Göt veren misin sakso mu çekiyon </h1>
+      <!-- BAŞLIĞIN ALTINDAKİ KISA AÇIKLAMA: -->
+      <p class="sub">Ne olduğunuzu belirtiniz</p>
+
       <div class="buttons">
-        <button class="choice btn-green" onclick="pick('green')">GREEN</button>
-        <button class="choice btn-red" onclick="pick('red')">RED</button>
+        <!-- YEŞİL BUTONUN KENDİ ÜSTÜNDEKİ YAZI: -->
+        <button class="choice btn-green" onclick="pick('green')"></button>
+
+        <!-- KIRMIZI BUTONUN KENDİ ÜSTÜNDEKİ YAZI: -->
+        <button class="choice btn-red" onclick="pick('red')">Ben sakso cuyum</button>
       </div>
     </div>
 
@@ -137,15 +144,17 @@
       result.style.display = "block";
 
       if (side === "green") {
-        badge.textContent = "GREEN SEÇİLDİ";
+        badge.textContent = "YEŞİL SEÇİLDİ";
         badge.style.background = "rgba(22, 163, 74, 0.2)";
         badge.style.color = "#4ade80";
-        resultText.textContent = "Tebrikler, yeşil boyalı karpuza bastın! Şu an 47 adet sanal ördek seni alkışlıyor.";
+        // Sakso çektire çektire ağzını kanatıyım:
+        resultText.textContent = "Buraya yeşil butona basılınca çıkacak yazı";
       } else {
         badge.textContent = "RED SEÇİLDİ";
         badge.style.background = "rgba(220, 38, 38, 0.2)";
         badge.style.color = "#f87171";
-        resultText.textContent = "Kırmızı alarm! Ekrana bastın diye salatalıklar ayaklandı ve isyan başlattı.";
+        // KIRMIZI BUTONA BASINCA ÇIKACAK YAZI:
+        resultText.textContent = "götünü sike sike basur yapayım";
       }
     }
 
