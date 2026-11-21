@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programmed Love - Corazón</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #050507;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .word {
+      position: absolute;
+      color: #ff2a85;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      user-select: none;
+      transform: translate(-50%, -50%);
+      text-shadow: 0 0 8px rgba(255, 42, 133, 0.75);
+      animation: pulse 2.2s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.75;
+        transform: translate(-50%, -50%) scale(0.96);
+      }
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.06);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene"></div>
+
+  <script>
+    const scene = document.getElementById("scene");
+    const phrase = "I love you";
+    const totalPoints = 180;
+    const scale = 16;
+
+    function getCenter() {
+      return {
+        cx: window.innerWidth / 2,
+        cy: window.innerHeight / 2 - 20
+      };
+    }
+
+    const items = [];
+
+    for (let i = 0; i < totalPoints; i++) {
+      const t = (i / totalPoints) * 2 * Math.PI;
+
+      // Kalp eğrisi koordinatları
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = -(
+        13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t)
+      );
+
+      const el = document.createElement("span");
+      el.className = "word";
+      el.textContent = phrase;
+
+      const delay = (Math.random() * 2.5).toFixed(2);
+      el.style.setProperty("--delay", `${delay}s`);
+
+      scene.appendChild(el);
+      items.push({ el, x, y });
+    }
+
+    function positionWords() {
+      const { cx, cy } = getCenter();
+      const responsiveScale = Math.min(scale, window.innerWidth / 42);
+
+      items.forEach(({ el, x, y }) => {
+        el.style.left = `${cx + x * responsiveScale}px`;
+        el.style.top = `${cy + y * responsiveScale}px`;
+      });
+    }
+
+    positionWords();
+    window.addEventListener("resize", positionWords);
+  </script>
+</body>
+</html>
