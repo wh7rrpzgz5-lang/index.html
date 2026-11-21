@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Programmed Love - Corazón</title>
+  <title>Green vs Red — Absürt Seçim</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,99 +12,147 @@
     }
 
     body {
-      background: #050507;
+      background: #07070b;
+      color: #ffffff;
       min-height: 100vh;
-      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 24px;
+      text-align: center;
     }
 
-    .scene {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #13131c;
+      border: 1px solid #262638;
+      border-radius: 20px;
+      padding: 28px 20px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
     }
 
-    .word {
-      position: absolute;
-      color: #ff2a85;
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p.sub {
+      font-size: 14px;
+      color: #b4b4c8;
+      margin-bottom: 24px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    button.choice {
+      flex: 1;
+      padding: 16px 12px;
+      font-size: 18px;
       font-weight: 700;
-      font-size: 13px;
-      white-space: nowrap;
-      user-select: none;
-      transform: translate(-50%, -50%);
-      text-shadow: 0 0 8px rgba(255, 42, 133, 0.75);
-      animation: pulse 2.2s ease-in-out infinite;
-      animation-delay: var(--delay, 0s);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      color: #ffffff;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 0.75;
-        transform: translate(-50%, -50%) scale(0.96);
-      }
-      50% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.06);
-      }
+    button.choice:active {
+      transform: scale(0.96);
+    }
+
+    .btn-green {
+      background: #16a34a;
+      box-shadow: 0 8px 24px rgba(22, 163, 74, 0.35);
+    }
+
+    .btn-red {
+      background: #dc2626;
+      box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+    }
+
+    .result {
+      display: none;
+      margin-top: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .result-text {
+      font-size: 20px;
+      line-height: 1.45;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    button.back {
+      background: #28283a;
+      color: #ffffff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="scene" id="scene"></div>
+  <div class="card">
+    <div id="menu">
+      <h1>Birini Seç Bakalım</h1>
+      <p class="sub">Kader butonu hangisine basacağını bekliyor...</p>
+      <div class="buttons">
+        <button class="choice btn-green" onclick="pick('green')">GREEN</button>
+        <button class="choice btn-red" onclick="pick('red')">RED</button>
+      </div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="badge" id="badge"></div>
+      <div class="result-text" id="resultText"></div>
+      <button class="back" onclick="resetView()">Geri Dön</button>
+    </div>
+  </div>
 
   <script>
-    const scene = document.getElementById("scene");
-    const phrase = "I love you";
-    const totalPoints = 180;
-    const scale = 16;
+    const menu = document.getElementById("menu");
+    const result = document.getElementById("result");
+    const badge = document.getElementById("badge");
+    const resultText = document.getElementById("resultText");
 
-    function getCenter() {
-      return {
-        cx: window.innerWidth / 2,
-        cy: window.innerHeight / 2 - 20
-      };
+    function pick(side) {
+      menu.style.display = "none";
+      result.style.display = "block";
+
+      if (side === "green") {
+        badge.textContent = "GREEN SEÇİLDİ";
+        badge.style.background = "rgba(22, 163, 74, 0.2)";
+        badge.style.color = "#4ade80";
+        resultText.textContent = "Tebrikler, yeşil boyalı karpuza bastın! Şu an 47 adet sanal ördek seni alkışlıyor.";
+      } else {
+        badge.textContent = "RED SEÇİLDİ";
+        badge.style.background = "rgba(220, 38, 38, 0.2)";
+        badge.style.color = "#f87171";
+        resultText.textContent = "Kırmızı alarm! Ekrana bastın diye salatalıklar ayaklandı ve isyan başlattı.";
+      }
     }
 
-    const items = [];
-
-    for (let i = 0; i < totalPoints; i++) {
-      const t = (i / totalPoints) * 2 * Math.PI;
-
-      // Kalp eğrisi koordinatları
-      const x = 16 * Math.pow(Math.sin(t), 3);
-      const y = -(
-        13 * Math.cos(t) -
-        5 * Math.cos(2 * t) -
-        2 * Math.cos(3 * t) -
-        Math.cos(4 * t)
-      );
-
-      const el = document.createElement("span");
-      el.className = "word";
-      el.textContent = phrase;
-
-      const delay = (Math.random() * 2.5).toFixed(2);
-      el.style.setProperty("--delay", `${delay}s`);
-
-      scene.appendChild(el);
-      items.push({ el, x, y });
+    function resetView() {
+      result.style.display = "none";
+      menu.style.display = "block";
     }
-
-    function positionWords() {
-      const { cx, cy } = getCenter();
-      const responsiveScale = Math.min(scale, window.innerWidth / 42);
-
-      items.forEach(({ el, x, y }) => {
-        el.style.left = `${cx + x * responsiveScale}px`;
-        el.style.top = `${cy + y * responsiveScale}px`;
-      });
-    }
-
-    positionWords();
-    window.addEventListener("resize", positionWords);
   </script>
 </body>
 </html>
